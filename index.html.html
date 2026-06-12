@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Egg — El estándar que garantiza tu experiencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS — egg-web-2026 ── */
+:root {
+  --color-beige-01: #f7f5f2;
+  --color-beige-02: #ece7e6;
+  --color-beige-03: #bbbab2;
+  --color-beige-04: #8d877c;
+  --color-black-base: #1b1b1b;
+  --color-grey-01: #d2d2d2;
+  --color-grey-02: #4c4b4b;
+  --color-grey-03: #353434;
+  --color-white: #ffffff;
+  --color-rose: #ff647c;
+  --color-yellow: #ffcd00;
+
+  --color-bg: var(--color-beige-01);
+  --color-bg-panel: var(--color-beige-02);
+  --color-surface-dark: var(--color-black-base);
+  --color-text-primary: var(--color-black-base);
+  --color-text-secondary: var(--color-beige-04);
+  --color-text-on-dark: var(--color-beige-01);
+  --color-border: var(--color-grey-01);
+  --color-border-dark: var(--color-grey-02);
+
+  --gradient-01: linear-gradient(6deg, #1b1b1b 14%, #ff647c 50%, #ffcd00 87%);
+  --gradient-accent: linear-gradient(6deg, #1b1b1b 14%, #ff647c 50%, #ffcd00 87%);
+  --gradient-accent-soft: linear-gradient(13deg, #ffcd00 14%, #ff8b9d 60%, #d4607a 87%);
+  --gradient-divider: linear-gradient(90deg, rgb(141 135 124 / 0) 0%, rgb(141 135 124 / 0.4) 50%, rgb(141 135 124 / 0) 100%);
+
+  --font-primary: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-accent:  "Space Grotesk", system-ui, sans-serif;
+
+  --radius-pill: 999px;
+  --radius-card: 30px;
+  --radius-card-sm: 16px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 180ms var(--ease-out);
+  --transition-base: 520ms var(--ease-out);
+
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px;
+  --space-4: 16px; --space-5: 24px;  --space-6: 32px;
+  --space-7: 48px; --space-8: 64px;  --space-9: 96px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-primary);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-size: 17px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV PILL ── */
+.nav-wrap {
+  padding: 12px 24px;
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-pill {
+  width: min(100% - 0px, 1041px);
+  height: 60px;
+  margin: 0 auto;
+  padding: 0 11px 0 22px;
+  border-radius: var(--radius-pill);
+  background: rgb(27 27 27 / 0.92);
+  backdrop-filter: blur(5px);
+  display: flex; align-items: center; gap: 0;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none; padding-right: 20px; flex-shrink: 0;
+  line-height: 0;
+}
+.nav-egg {
+  width: 32px; height: 32px;
+  background: var(--color-yellow);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+}
+.nav-wordmark {
+  font-family: var(--font-accent);
+  font-size: 19px; font-weight: 600;
+  color: var(--color-white);
+  letter-spacing: -0.02em;
+}
+.nav-links { display: flex; gap: 2px; flex: 1; }
+.nav-link {
+  font-family: var(--font-accent);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: rgba(247,245,242,.45);
+  padding: 7px 14px; border-radius: var(--radius-pill);
+  cursor: pointer; border: none; background: none;
+  transition: color var(--transition-fast), background var(--transition-fast);
+  text-decoration: none;
+}
+.nav-link:hover { color: var(--color-white); background: rgba(255,255,255,.1); }
+.nav-cta {
+  margin-left: auto; flex-shrink: 0;
+  font-family: var(--font-accent);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  min-height: 40px; padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-grey-02);
+  background: var(--color-black-base);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  /* gradient-accent-soft on label */
+  background-clip: text;
+  -webkit-background-clip: unset;
+  color: transparent;
+  background: var(--color-black-base);
+  position: relative;
+  overflow: hidden;
+}
+/* simpler approach for CTA */
+.nav-cta {
+  background: var(--color-black-base);
+  border: 1px solid var(--color-grey-02);
+  border-radius: var(--radius-pill);
+  color: var(--color-yellow);
+  font-family: var(--font-accent);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  min-height: 40px; padding: 10px 20px;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  flex-shrink: 0; margin-left: auto;
+}
+.nav-cta:hover { background: var(--color-grey-03); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 580px;
+  padding: 80px 100px 72px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: center;
+  position: relative; overflow: hidden;
+  max-width: 1440px; margin: 0 auto;
+}
+
+/* Animated hero gradient */
+@keyframes heroGradientFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.hero-title {
+  font-family: var(--font-primary);
+  font-size: 70px; font-weight: 600;
+  line-height: 1; letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  background: linear-gradient(100deg, #1b1b1b 0%, #ff647c 25%, #ffcd00 50%, #ff647c 75%, #1b1b1b 100%);
+  background-size: 300% 100%;
+  animation: heroGradientFlow 9s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  max-width: 860px;
+}
+.hero-section-tag {
+  font-family: var(--font-accent);
+  font-size: 16px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  background: var(--gradient-01);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 28px;
+}
+.hero-copy {
+  font-family: var(--font-primary);
+  font-size: 22px; font-weight: 400;
+  line-height: 1.6; letter-spacing: -0.02em;
+  color: var(--color-text-secondary);
+  max-width: 580px; margin-bottom: 56px;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 72px; }
+.btn-primary {
+  font-family: var(--font-accent);
+  font-size: 14px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  min-height: 48px; padding: 14px 24px;
+  border-radius: var(--radius-pill);
+  background: var(--color-black-base);
+  color: var(--color-beige-01);
+  border: 1px solid var(--color-black-base);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  text-decoration: none; display: inline-flex; align-items: center;
+}
+.btn-primary:hover { background: var(--color-grey-03); }
+.btn-outline {
+  font-family: var(--font-accent);
+  font-size: 14px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  min-height: 48px; padding: 14px 24px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-grey-01);
+  cursor: pointer;
+  transition: background var(--transition-fast), border var(--transition-fast);
+  text-decoration: none; display: inline-flex; align-items: center;
+}
+.btn-outline:hover { background: var(--color-beige-02); border-color: transparent; }
+
+/* Hero stats */
+.hero-stats {
+  display: flex; gap: 0;
+  border-top: 1px solid;
+  border-image: var(--gradient-divider) 1;
+  padding-top: 32px;
+  width: 100%;
+}
+.hstat {
+  flex: 1;
+  padding-right: var(--space-6);
+  border-right: 1px solid;
+  border-image: var(--gradient-divider) 1;
+  padding: 0 var(--space-7) 0 0;
+  margin-right: var(--space-7);
+}
+.hstat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+.hstat-num {
+  font-family: var(--font-accent);
+  font-size: 50px; font-weight: 300;
+  line-height: 1; letter-spacing: -0.05em;
+  background: var(--gradient-01);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 8px;
+}
+.hstat-label {
+  font-family: var(--font-primary);
+  font-size: 14px; font-weight: 400;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* ── NODES SVG ── */
+.nodes-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── SECTION ── */
+.section {
+  max-width: 1440px; margin: 0 auto;
+  padding: 110px 100px;
+  border-top: 1px solid var(--color-border);
+}
+.section-tag {
+  font-family: var(--font-accent);
+  font-size: 16px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  background: var(--gradient-01);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 28px;
+  display: inline-block;
+}
+.section-h2 {
+  font-family: var(--font-primary);
+  font-size: 50px; font-weight: 600;
+  line-height: 1.1; letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  margin-bottom: 28px;
+}
+.section-copy {
+  font-family: var(--font-primary);
+  font-size: 22px; font-weight: 400;
+  line-height: 1.6; letter-spacing: -0.02em;
+  color: var(--color-text-secondary);
+  max-width: 620px;
+}
+
+/* ── INTRO GRID ── */
+.intro-grid {
+  display: grid; grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-8); margin-top: var(--space-7);
+}
+.intro-body-text {
+  font-family: var(--font-primary);
+  font-size: 17px; line-height: 1.4; letter-spacing: -0.01em;
+  color: var(--color-text-secondary);
+}
+.tags-wrap { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-5); }
+.etag {
+  font-family: var(--font-accent);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 6px 16px; border-radius: var(--radius-pill);
+  border: 1px solid var(--color-grey-01);
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+}
+.etag.dark {
+  background: var(--color-black-base);
+  color: var(--color-yellow);
+  border-color: var(--color-black-base);
+}
+.stat-rows { display: flex; flex-direction: column; }
+.stat-row {
+  display: flex; align-items: center; gap: var(--space-6);
+  padding: 28px 0;
+  border-top: 1px solid;
+  border-image: var(--gradient-divider) 1;
+}
+.stat-row:last-child { border-bottom: 1px solid; border-image: var(--gradient-divider) 1; }
+.stat-num {
+  font-family: var(--font-accent);
+  font-size: 50px; font-weight: 300;
+  line-height: 1; letter-spacing: -0.05em;
+  background: var(--gradient-01);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  min-width: 160px; flex-shrink: 0;
+}
+.stat-label {
+  font-family: var(--font-primary);
+  font-size: 17px; color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* ── ACCORDION ── */
+.accordion-section { margin-bottom: var(--space-3); }
+.acc-trigger {
+  width: 100%; text-align: left; background: none; border: none;
+  cursor: pointer;
+  display: flex; align-items: center; gap: var(--space-5);
+  padding: 28px 0;
+  border-top: 1px solid;
+  border-image: var(--gradient-divider) 1;
+  transition: opacity var(--transition-fast);
+}
+.acc-trigger:hover { opacity: 0.75; }
+.acc-num {
+  font-family: var(--font-accent);
+  font-size: 16px; font-weight: 500;
+  letter-spacing: 0.07em;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--color-black-base);
+  color: var(--color-yellow);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.acc-trigger.open .acc-num { background: var(--color-yellow); color: var(--color-black-base); }
+.acc-info { flex: 1; }
+.acc-title {
+  font-family: var(--font-primary);
+  font-size: 21px; font-weight: 600;
+  color: var(--color-text-primary); line-height: 1;
+  margin-bottom: 4px;
+}
+.acc-sub {
+  font-family: var(--font-primary);
+  font-size: 14px; color: var(--color-text-secondary);
+}
+.acc-chevron {
+  color: var(--color-beige-03);
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+}
+.acc-trigger.open .acc-chevron { transform: rotate(180deg); color: var(--color-text-primary); }
+.acc-body { display: none; padding: 0 0 var(--space-7); }
+.acc-body.open { display: block; }
+
+/* ── FLOW TIMELINE ── */
+.flow-timeline { display: flex; flex-direction: column; position: relative; }
+.flow-timeline::before {
+  content: ''; position: absolute;
+  left: 19px; top: 0; bottom: 0; width: 1px;
+  background: var(--gradient-divider);
+}
+.flow-step {
+  display: grid; grid-template-columns: 40px 1fr;
+  gap: var(--space-4); align-items: flex-start;
+  position: relative;
+}
+.flow-step + .flow-step { margin-top: var(--space-2); }
+.flow-dot-wrap {
+  display: flex; justify-content: center;
+  padding-top: 18px; position: relative; z-index: 1;
+}
+.flow-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--color-grey-02);
+  background: var(--color-bg);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.flow-step.open .flow-dot { background: var(--color-rose); border-color: var(--color-rose); }
+.flow-body {
+  background: var(--color-bg-panel);
+  border-radius: var(--radius-card-sm);
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.flow-body:hover { border-color: var(--color-grey-01); }
+.flow-step.open .flow-body {
+  border-color: var(--color-grey-01);
+  box-shadow: 0 4px 24px rgba(27,27,27,0.06);
+}
+.flow-head {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+}
+.flow-name {
+  font-family: var(--font-primary);
+  font-size: 17px; font-weight: 600;
+  color: var(--color-text-primary);
+}
+.flow-timing {
+  font-family: var(--font-accent);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  border: 1px solid var(--color-grey-01);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px; flex-shrink: 0; white-space: nowrap;
+}
+.flow-obj {
+  font-size: 14px; color: var(--color-text-secondary);
+  margin-top: 4px; line-height: 1.4;
+}
+.flow-detail {
+  display: none; margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  grid-template-columns: 1fr 1fr; gap: var(--space-3);
+}
+.flow-step.open .flow-detail { display: grid; }
+.detail-box { border-radius: 10px; padding: 14px 16px; }
+.detail-box.ok  { background: #e8f5e9; }
+.detail-box.risk{ background: #fce4ec; }
+.detail-label {
+  font-family: var(--font-accent);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px;
+}
+.detail-box.ok   .detail-label { color: #1b5e20; }
+.detail-box.risk .detail-label { color: #880e4f; }
+.detail-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+
+/* ── MATRIX ── */
+.mx-row { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+.mx-row:last-child { margin-bottom: 0; }
+.mx-lbl {
+  font-family: var(--font-primary);
+  font-size: 14px; font-weight: 600;
+  color: var(--color-text-primary);
+  width: 150px; flex-shrink: 0; text-align: right;
+}
+.mx-bars { display: flex; gap: var(--space-2); align-items: center; flex: 1; }
+.mxb {
+  height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-accent);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.05em; text-align: center; line-height: 1.2; padding: 0 10px;
+}
+.mxb.g { background: #e8f5e9; border: 1px solid #a5d6a7; color: #1b5e20; }
+.mxb.y { background: #fffde7; border: 1px solid #fff176; color: #5a4800; }
+.mxb.o { background: #fff3e0; border: 1px solid #ffcc80; color: #7a3800; }
+.mxb.r { background: #fce4ec; border: 1px solid #f48fb1; color: #880e4f; }
+.mx-result {
+  font-family: var(--font-accent);
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: var(--radius-pill);
+  white-space: nowrap; flex-shrink: 0;
+}
+.mx-result.g { background: #e8f5e9; color: #1b5e20; }
+.mx-result.y { background: #fffde7; color: #5a4800; }
+.mx-result.o { background: #fff3e0; color: #7a3800; }
+.mx-result.r { background: #fce4ec; color: #880e4f; }
+
+/* ── PLAZO ── */
+.plazos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); margin-top: var(--space-6); }
+.plazo-block-title {
+  font-family: var(--font-accent);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+  display: flex; align-items: center; gap: var(--space-2);
+}
+.plazo-tag {
+  font-family: var(--font-accent);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: var(--radius-pill);
+}
+.plazo-tag.green { background: #e8f5e9; color: #1b5e20; }
+.plazo-tag.blue  { background: #e3f2fd; color: #0d47a1; }
+.plazo-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; gap: var(--space-4);
+  border-top: 1px solid;
+  border-image: var(--gradient-divider) 1;
+}
+.plazo-row:last-child { border-bottom: 1px solid; border-image: var(--gradient-divider) 1; }
+.plazo-name { font-size: 17px; color: var(--color-text-secondary); font-weight: 400; }
+.plazo-val {
+  font-family: var(--font-accent);
+  font-size: 14px; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--color-text-primary); white-space: nowrap;
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-grey-01);
+  border-radius: var(--radius-pill); padding: 4px 16px;
+}
+.tree-block { margin-top: var(--space-8); }
+.tree-block-title {
+  font-family: var(--font-accent);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--color-text-secondary); margin-bottom: var(--space-4);
+}
+.tree-rows { display: flex; flex-direction: column; gap: var(--space-2); }
+.tree-row {
+  display: grid; grid-template-columns: 200px 1fr 1fr;
+  gap: var(--space-4); align-items: center;
+  padding: 14px 20px; border-radius: var(--radius-card-sm);
+  background: var(--color-bg-panel);
+}
+.tree-q { font-weight: 600; font-size: 15px; color: var(--color-text-primary); }
+.tree-y { font-size: 14px; color: #1b5e20; font-weight: 500; }
+.tree-n { font-size: 14px; color: #880e4f; font-weight: 500; }
+
+/* ── REGLAS ── */
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-top: var(--space-6); }
+.rule-card {
+  background: var(--color-bg-panel);
+  border-radius: var(--radius-card-sm);
+  padding: 18px 20px;
+  border: 1px solid transparent;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.rule-card:hover { border-left-color: var(--color-yellow); }
+.rule-card.open {
+  border-left-color: var(--color-rose);
+  background: var(--color-white);
+  border-color: var(--color-grey-01);
+  border-left-color: var(--color-rose);
+}
+.rule-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.rule-title {
+  font-family: var(--font-primary);
+  font-size: 17px; font-weight: 600;
+  color: var(--color-text-primary); line-height: 1.3;
+}
+.rule-chevron { color: var(--color-beige-03); transition: transform var(--transition-fast); flex-shrink: 0; margin-top: 3px; }
+.rule-card.open .rule-chevron { transform: rotate(180deg); color: var(--color-text-primary); }
+.rule-body { display: none; margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-border); }
+.rule-card.open .rule-body { display: block; }
+.rule-risk {
+  font-family: var(--font-primary);
+  font-size: 14px; color: #7f1d1d;
+  background: #fce4ec; border-radius: 8px;
+  padding: 8px 14px; line-height: 1.5; display: inline-block;
+}
+
+/* ── COMMITMENT ── */
+.commitment {
+  background: var(--color-black-base);
+  border-radius: var(--radius-card);
+  padding: 64px 80px;
+  display: grid; grid-template-columns: 1fr 1px 1fr;
+  gap: 56px; margin-top: var(--space-7);
+}
+.commitment-divider { background: rgba(255,255,255,.08); align-self: stretch; }
+.commitment-tag {
+  font-family: var(--font-accent);
+  font-size: 16px; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  margin-bottom: 24px; display: inline-block;
+}
+.commitment-tag.yellow { color: var(--color-yellow); }
+.commitment-tag.rose   { color: var(--color-rose); }
+.commitment-h {
+  font-family: var(--font-primary);
+  font-size: 34px; font-weight: 600;
+  color: var(--color-white);
+  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px;
+}
+.commitment-body {
+  font-family: var(--font-primary);
+  font-size: 17px; color: rgba(247,245,242,.4);
+  line-height: 1.6;
+}
+
+footer {
+  background: #0a0a0a;
+  padding: 64px 100px;
+  text-align: center;
+}
+footer span {
+  font-family: var(--font-accent);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(247,245,242,.25);
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 56px 24px 48px; }
+  .hero-title { font-size: clamp(42px, 14vw, 64px); }
+  .section { padding: 72px 24px; }
+  .section-h2 { font-size: clamp(34px, 10vw, 48px); }
+  .intro-grid, .plazos-grid, .rules-grid, .commitment { grid-template-columns: 1fr; }
+  .commitment { padding: 48px 32px; } .commitment-divider { display: none; }
+  .nav-links { display: none; }
+}
+
+/* ── FLOWCHART (árbol SVG del v4) ── */
+.fc-outer { overflow-x: auto; padding-bottom: 8px; }
+.fc-box {
+  width: 100%; border-radius: 8px; padding: 10px 12px;
+  font-size: 11px; line-height: 1.45; text-align: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+  font-family: var(--font-primary);
+}
+.fc-g { background: #c8e6c9; border: 1.5px solid #66bb6a; color: #1a3a1e; }
+.fc-y { background: #fff9c4; border: 1.5px solid #f9a825; color: #4a3800; }
+.fc-w { background: var(--color-white); border: 1.5px solid var(--color-grey-01); color: var(--color-text-secondary); }
+.fc-box strong { font-size: 10.5px; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 3px; letter-spacing: .02em; }
+.fc-box .sub   { font-size: 10px; color: inherit; opacity: .8; }
+
+
+/* Onboarding section grid */
+.onb-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: var(--space-8);
+  margin-top: var(--space-7);
+  align-items: start;
+}
+
+/* Árbol responsive */
+.fc-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 12px;
+  border-radius: var(--radius-card-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-panel);
+  padding: 20px;
+}
+.fc-scroll-hint {
+  display: none;
+  font-family: var(--font-accent);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+}
+
+@media (max-width: 900px) {
+  .fc-scroll-hint { display: block; }
+  .onb-section-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ── MATRIZ v4 (posicionada absolutamente) ── */
+.mx-block {
+  height: 54px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-accent);
+  font-size: 11px; font-weight: 600; text-align: center; line-height: 1.3; padding: 0 8px;
+}
+.mx-v4-green  { background: #C8E6C9; border: 1.5px solid #66BB6A; color: #1a5c35; }
+.mx-v4-yellow { background: #FFF9C4; border: 1.5px solid #E0C840; color: #5a4800; }
+.mx-v4-peach  { background: #FDE8D0; border: 1.5px solid #F0A060; color: #7a3800; }
+.mx-v4-red    { background: #F5A5A5; border: 1.5px solid #D06060; color: #5c1010; }
+.mx-v4-wrap {
+  position: relative;
+  width: 100%; min-width: 760px;
+  height: 318px;
+  background: var(--color-bg);
+  border-radius: var(--radius-card-sm);
+  border: 1px solid var(--color-border);
+}
+.mx-v4-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="nav-pill">
+    <a class="nav-logo" href="#">
+      <svg height="28" viewBox="0 0 130 65" xmlns="http://www.w3.org/2000/svg">
+  <defs><style>.st0{opacity:0;fill-rule:evenodd}.st1,.st3{fill:#fff}.st2,.st4{fill:#ffcd00}.st4{opacity:.3}.st2{fill-rule:evenodd}</style></defs>
+  <g>
+    <path class="st3" d="M71.4,33.6h-22.7c.2,2.9,1.1,5.2,2.9,7,1.8,1.8,4,2.7,6.8,2.7s3.8-.5,5.4-1.6c1.5-1.1,2.6-2.4,3.2-4.2h4c-.8,2.7-2.3,4.9-4.6,6.6-2.2,1.7-4.9,2.5-8,2.5s-7.4-1.4-9.8-4.2c-2.4-2.8-3.6-6.2-3.6-10.2s1.2-7.3,3.7-10.1c2.5-2.8,5.7-4.2,9.7-4.2s7.2,1.3,9.5,4c2.4,2.7,3.6,6,3.6,9.9v1.4ZM58.3,21.6c-2.6,0-4.7.8-6.4,2.5-1.7,1.7-2.7,3.8-3.1,6.4h18.8c-.3-2.7-1.2-4.8-2.9-6.4-1.7-1.6-3.8-2.4-6.5-2.4Z"/>
+    <path class="st1" d="M129.9,30.5h-12.2c-3.8,0-2.9,3.1-2.9,3.1h11.3v.9h0c-.3,2.7-1.2,4.8-2.9,6.4-1.7,1.6-3.8,2.4-6.5,2.4s-4.7-.8-6.4-2.5c-1.7-1.7-2.7-3.8-3.1-6.4h0c0-.6-.1-1.3-.1-2s0-.8,0-1.1h0c.2-2.9,1.1-5.2,2.9-7,1.8-1.8,4-2.7,6.8-2.7s3.8.5,5.4,1.6c1.3.9,2.2,1.9,2.8,3.2h4c-.9-2.3-2.3-4.2-4.2-5.7-2.2-1.7-4.9-2.5-8-2.5s-7.4,1.4-9.8,4.2c-2.4,2.8-3.6,6.2-3.6,10.2s1.2,7.3,3.7,10.1c2.5,2.8,5.7,4.2,9.7,4.2s7.2-1.3,9.5-4c2-2.3,3.2-5,3.5-8.3h0v-.9c0-.5,0-1.1,0-1.7v-1.4Z"/>
+    <path class="st1" d="M100.6,30.5h-12.2c-3.8,0-2.9,3.1-2.9,3.1h11.3v.9h0c-.3,2.7-1.2,4.8-2.9,6.4-1.7,1.6-3.8,2.4-6.5,2.4s-4.7-.8-6.4-2.5c-1.7-1.7-2.7-3.8-3.1-6.4h0c0-.6-.1-1.3-.1-2s0-.8,0-1.1h0c.2-2.9,1.1-5.2,2.9-7,1.8-1.8,4-2.7,6.8-2.7s3.8.5,5.4,1.6c1.3.9,2.2,1.9,2.8,3.2h4c-.9-2.3-2.3-4.2-4.2-5.7-2.2-1.7-4.9-2.5-8-2.5s-7.4,1.4-9.8,4.2c-2.4,2.8-3.6,6.2-3.6,10.2s1.2,7.3,3.7,10.1c2.5,2.8,5.7,4.2,9.7,4.2s7.2-1.3,9.5-4c2-2.3,3.2-5,3.5-8.3h0v-.9c0-.5,0-1.1,0-1.7v-1.4Z"/>
+  </g>
+  <g>
+    <path class="st2" d="M18.3,6.8c-16.5,0-31.1,51.3,0,51.3s16.5-51.2,0-51.3Z"/>
+    <path class="st0" d="M27.8,31.2l-10.6,15.1c-.4.5-1.2.2-1.1-.4l1.9-9.6h-6.5c-.5,0-1.1-.7-.5-1.5l10.6-14.8c.4-.5,1.1-.2,1.1.4l-1.3,10.3,5.9-.4c.5,0,.8.5.5.9Z"/>
+    <path class="st1" d="M26.6,30.5l-10.6,15.1c-.4.5-1.2.2-1.1-.4l1.9-10.2h-6.5c-.5,0-.8-.5-.5-.9l10.6-14.8c.4-.5,1.1-.2,1.1.4l-1.3,10.3,5.9-.4c.5,0,.8.5.5.9Z"/>
+    <path class="st4" d="M21.5,19.7c0-.6-.7-.9-1.1-.4l-10.6,14.8c-.3.4,0,.9.5.9h.5l10.6-14.9v-.4Z"/>
+  </g>
+</svg>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#metodologia">Metodología</a>
+      <a class="nav-link" href="#flujo">El Flujo</a>
+      <a class="nav-link" href="#onboarding">Onboarding</a>
+      <a class="nav-link" href="#plazos">Plazos</a>
+      <a class="nav-link" href="#etiquetas">Etiquetas</a>
+      <a class="nav-link" href="#mentor">Mentor</a>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('compromiso').scrollIntoView({behavior:'smooth'})">Nuestro Compromiso</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="nodes-bg" viewBox="0 0 1440 580" preserveAspectRatio="xMidYMid slice">
+    <g fill="none" stroke="#C8C5BE" stroke-width="0.8" opacity="0.45">
+      <line x1="0" y1="80" x2="220" y2="160"/><line x1="220" y1="160" x2="480" y2="90"/>
+      <line x1="480" y1="90" x2="700" y2="200"/><line x1="700" y1="200" x2="960" y2="85"/>
+      <line x1="960" y1="85" x2="1180" y2="155"/><line x1="1180" y1="155" x2="1440" y2="60"/>
+      <line x1="100" y1="490" x2="360" y2="410"/><line x1="360" y1="410" x2="600" y2="500"/>
+      <line x1="600" y1="500" x2="840" y2="415"/><line x1="840" y1="415" x2="1080" y2="510"/>
+      <line x1="220" y1="160" x2="360" y2="410"/><line x1="700" y1="200" x2="600" y2="500"/>
+      <line x1="960" y1="85"  x2="840" y2="415"/><line x1="1180" y1="155" x2="1080" y2="510"/>
+    </g>
+    <g fill="#C8C5BE" opacity="0.5">
+      <circle cx="220" cy="160" r="3"/><circle cx="480" cy="90" r="4"/>
+      <circle cx="700" cy="200" r="2.5"/><circle cx="960" cy="85" r="3.5"/>
+      <circle cx="1180" cy="155" r="2.5"/><circle cx="360" cy="410" r="4"/>
+      <circle cx="600" cy="500" r="2.5"/><circle cx="840" cy="415" r="2"/>
+      <circle cx="1080" cy="510" r="3"/><circle cx="140" cy="310" r="1.8"/>
+    </g>
+  </svg>
+  <div style="position:relative;z-index:1;width:100%;">
+    <p class="hero-section-tag">Metodología Egg · Estándar de Excelencia</p>
+    <h1 class="hero-title">El estándar que garantiza tu experiencia</h1>
+    <p class="hero-copy">Cada componente del modelo existe por una razón científica, documentada en más de 5 millones de sesiones. Cuando se respetan, la calidad no es una promesa — es un resultado.</p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-num">5M+</div><div class="hstat-label">sesiones registradas</div></div>
+      <div class="hstat"><div class="hstat-num">500K</div><div class="hstat-label">participantes en la metodología</div></div>
+      <div class="hstat"><div class="hstat-num">+80%</div><div class="hstat-label">éxito en adopción de nuevas prácticas</div></div>
+      <div class="hstat"><div class="hstat-num">+90%</div><div class="hstat-label">satisfacción de participantes</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- METODOLOGÍA -->
+<section class="section" id="metodologia">
+  <p class="section-tag">Metodología Egg</p>
+  <h2 class="section-h2">Un modelo construido sobre<br>la ciencia de la cooperación</h2>
+  <div class="intro-grid" style="align-items:flex-end;">
+    <div>
+      <p class="intro-body-text">La Metodología Egg es un modelo escalable de aprendizaje colaborativo donde las personas aprenden haciendo, resolviendo desafíos en equipo y construyendo conocimiento mutuo. A diferencia de los sistemas de educación tradicional, maximiza la participación activa y el intercambio entre pares sin depender de un facilitador humano.</p>
+      <p class="intro-body-text" style="margin-top:16px;">Esto es posible gracias a la Inteligencia de la Cooperación (IC), nuestra tecnología basada en la ciencia de la cooperación, del comportamiento humano y del aprendizaje que garantiza la misma calidad a cualquier escala.</p>
+      <div class="tags-wrap">
+        <span class="etag dark">Aprender haciendo</span>
+        <span class="etag dark">Equipos rotativos</span>
+        <span class="etag">Autonomía guiada</span>
+        <span class="etag">Participación distribuida</span>
+        <span class="etag">Escalabilidad fractal</span>
+        <span class="etag">Feedback inmediato</span>
+      </div>
+    </div>
+    <div class="stat-rows">
+      <div class="stat-row"><div class="stat-num">5M+</div><div class="stat-label">sesiones sincrónicas registradas</div></div>
+      <div class="stat-row"><div class="stat-num">500K</div><div class="stat-label">participantes en la metodología</div></div>
+      <div class="stat-row"><div class="stat-num">+80%</div><div class="stat-label">de éxito en la adopción de nuevas prácticas</div></div>
+      <div class="stat-row"><div class="stat-num">+90%</div><div class="stat-label">de satisfacción de participantes</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLUJO -->
+<section class="section" id="flujo">
+  <p class="section-tag">① Flujo de una Sesión</p>
+  <h2 class="section-h2">8 etapas secuenciales.<br>Todas necesarias.</h2>
+  <p class="section-copy">Hacé clic en cada etapa para ver su objetivo y el riesgo de modificarla.</p>
+
+  <div style="margin-top:var(--space-7);">
+  <div class="flow-timeline">
+
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="flow-dot-wrap"><div class="flow-dot"></div></div>
+      <div class="flow-body">
+        <div class="flow-head"><div><div class="flow-name">Comunicación Previa</div><div class="flow-obj">Mail de bienvenida con accesos, calendario y requisitos técnicos.</div></div><div class="flow-timing">48h · 24h · 2h antes</div></div>
+        <div class="flow-detail"><div class="detail-box ok"><div class="detail-label">Objetivo</div><div class="detail-text">Reducir incertidumbre y preparar autonomía antes del espacio sincrónico.</div></div><div class="detail-box risk"><div class="detail-label">Riesgo si se omite</div><div class="detail-text">Ingresos fallidos, dependencia operativa y reducción en la tasa de activación.</div></div></div>
+      </div>
+    </div>
+
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="flow-dot-wrap"><div class="flow-dot"></div></div>
+      <div class="flow-body">
+        <div class="flow-head"><div><div class="flow-name">Onboarding Aut. / Gral. / Stream <span style="font-size:13px;font-weight:400;color:var(--color-text-secondary)">(recomendado: Automático)</span></div><div class="flow-obj">Videos de contexto, rompehielo y asignación automática de equipos por IC.</div></div><div class="flow-timing">8–15 min · Al inicio</div></div>
+        <div class="flow-detail"><div class="detail-box ok"><div class="detail-label">Objetivo</div><div class="detail-text">Asegurar que el 80% de los participantes ingrese al equipo con contexto para trabajar de forma autónoma desde el inicio.</div></div><div class="detail-box risk"><div class="detail-label">Riesgo si se modifica</div><div class="detail-text">Equipos incompletos, falta de contexto y pérdida de usuarios antes de la rotación.</div></div></div>
+      </div>
+    </div>
+
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="flow-dot-wrap"><div class="flow-dot"></div></div>
+      <div class="flow-body">
+        <div class="flow-head"><div><div class="flow-name">Rompehielo</div><div class="flow-obj">Activa la dinámica del equipo e introduce semántica colaborativa.</div></div><div class="flow-timing">8 min</div></div>
+        <div class="flow-detail"><div class="detail-box ok"><div class="detail-label">Objetivo</div><div class="detail-text">Sincronizar el inicio de la acción colectiva y reducir la pasividad inicial.</div></div><div class="detail-box risk"><div class="detail-label">Riesgo si se omite</div><div class="detail-text">Inicio lento, dependencia de soporte y demora en la activación grupal.</div></div></div>
+      </div>
+    </div>
+
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="flow-dot-wrap"><div class="flow-dot"></div></div>
+      <div class="flow-body">
+        <div class="flow-head"><div><div class="flow-name">Desafíos</div><div class="flow-obj">Desarrollo de las actividades principales — aprender haciendo. 60% de la sesión.</div></div><div class="flow-timing">52 min</div></div>
+        <div class="flow-detail"><div class="detail-box ok"><div class="detail-label">Objetivo</div><div class="detail-text">Maximizar el aprendizaje a través de la práctica activa en equipo.</div></div><div class="detail-box risk"><div class="detail-label">Riesgo si se modifica</div><div class="detail-text">Reducción del aprendizaje efectivo y caída de la cooperación activa entre pares.</div></div></div>
+      </div>
+    </div>
+
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="flow-dot-wrap"><div class="flow-dot"></div></div>
+      <div class="flow-body">
+        <div class="flow-head"><div><div class="flow-name">Reflexión</div><div class="flow-obj">Realizar metacognición de lo aprendido</div></div><div class="flow-timing">12 min</div></div>
+        <div class="flow-detail"><div class="detail-box ok"><div class="detail-label">Objetivo</div><div class="detail-text">Aumentar la probabilidad de aplicar lo aprendido al contexto real de trabajo.</div></div><div class="detail-box risk"><div class="detail-label">Riesgo si se omite</div><div class="detail-text">El conocimiento queda sin consolidar y la transferencia al trabajo cotidiano se reduce.</div></div></div>
+      </div>
+    </div>
+
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="flow-dot-wrap"><div class="flow-dot"></div></div>
+      <div class="flow-body">
+        <div class="flow-head"><div><div class="flow-name">Compromiso</div><div class="flow-obj">Refuerza el hábito y la intención de aplicar lo aprendido.</div></div><div class="flow-timing">8 min</div></div>
+        <div class="flow-detail"><div class="detail-box ok"><div class="detail-label">Objetivo</div><div class="detail-text">Aumentar la probabilidad de aplicabilidad y sostener la continuidad entre sesiones.</div></div><div class="detail-box risk"><div class="detail-label">Riesgo si se omite</div><div class="detail-text">Menor tasa de adopción y pérdida de continuidad entre encuentros.</div></div></div>
+      </div>
+    </div>
+
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="flow-dot-wrap"><div class="flow-dot"></div></div>
+      <div class="flow-body">
+        <div class="flow-head"><div><div class="flow-name">Cierre + Síntesis</div><div class="flow-obj">Recapitular lo aprendido.</div></div><div class="flow-timing">al finalizar</div></div>
+        <div class="flow-detail"><div class="detail-box ok"><div class="detail-label">Objetivo</div><div class="detail-text">Capturar la percepción emocional mientras la señal está activa y cerrar el ciclo.</div></div><div class="detail-box risk"><div class="detail-label">Riesgo si se omite</div><div class="detail-text">Pérdida de feedback y baja tasa de respuesta. La señal emocional pierde precisión con el tiempo.</div></div></div>
+      </div>
+    </div>
+
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="flow-dot-wrap"><div class="flow-dot"></div></div>
+      <div class="flow-body">
+        <div class="flow-head"><div><div class="flow-name">Feedback personalizado</div><div class="flow-obj">Informe personalizado al participante presente. </div></div><div class="flow-timing">post-sesión</div></div>
+        <div class="flow-detail"><div class="detail-box ok"><div class="detail-label">Objetivo</div><div class="detail-text">Reforzar el vínculo con la experiencia y consolidar el aprendizaje mientras la memoria está activa.</div></div><div class="detail-box risk"><div class="detail-label">Riesgo si se omite</div><div class="detail-text">Pérdida de continuidad, menor sentido de progreso individual y aumento de la deserción.</div></div></div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<!-- ONBOARDING -->
+<section class="section" id="onboarding">
+  <p class="section-tag">② Onboarding Automático</p>
+  <h2 class="section-h2">Cómo entra cada participante<br>sin intervención humana</h2>
+  <p class="section-copy">El onboarding garantiza contexto formativo y acumulación de usuarios antes de la rotación, independientemente del momento exacto de ingreso.</p>
+
+  <div class="onb-section-grid">
+    <!-- columna izquierda: items -->
+    <div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-5);">
+        <div style="display:flex;gap:14px;align-items:flex-start;"><div style="width:8px;height:8px;border-radius:50%;background:var(--color-rose);flex-shrink:0;margin-top:6px;"></div><div><div style="font-size:17px;font-weight:600;margin-bottom:3px;">Videos obligatorios</div><div style="font-size:14px;color:var(--color-text-secondary);line-height:1.5;">Contexto mínimo garantizado para todos, sin importar cuándo ingresan.</div></div></div>
+        <div style="display:flex;gap:14px;align-items:flex-start;"><div style="width:8px;height:8px;border-radius:50%;background:var(--color-rose);flex-shrink:0;margin-top:6px;"></div><div><div style="font-size:17px;font-weight:600;margin-bottom:3px;">Videos complementarios</div><div style="font-size:14px;color:var(--color-text-secondary);line-height:1.5;">Contexto adicional para quienes llegan a horario.</div></div></div>
+        <div style="display:flex;gap:14px;align-items:flex-start;"><div style="width:8px;height:8px;border-radius:50%;background:var(--color-rose);flex-shrink:0;margin-top:6px;"></div><div><div style="font-size:17px;font-weight:600;margin-bottom:3px;">Tiempo de espera (extraTime)</div><div style="font-size:14px;color:var(--color-text-secondary);line-height:1.5;">Buffer de 3–7 min para acumular participantes antes de rotar. Siempre activo.</div></div></div>
+        <div style="margin-top:var(--space-5);background:var(--color-bg-panel);border-radius:var(--radius-card-sm);padding:16px 20px;border-left:3px solid var(--color-yellow);">
+        <p style="font-size:14px;color:#7a5800;line-height:1.5;">Modificar el onboarding reduce la tasa de activación y aumenta la dependencia operativa.</p>
+      </div>
+    </div>
+
+    <!-- columna derecha: matriz -->
+    <div>
+      <p style="font-family:var(--font-accent);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:var(--space-4);">Matriz de llegada — qué ve cada participante</p>
+      <div class="mx-v4-outer">
+      <div class="mx-v4-wrap">
+        <!-- línea vertical: listos para ingresar -->
+        <div style="position:absolute;left:620px;top:24px;height:270px;width:2px;background:#444;border-radius:1px;z-index:20;"></div>
+        <div style="position:absolute;left:626px;top:28px;font-size:10px;font-weight:700;font-family:var(--font-accent);color:#444;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;z-index:21;letter-spacing:.05em;line-height:1;">listos para ingresar a los equipos</div>
+        <!-- labels izquierda -->
+        <div style="position:absolute;left:8px;width:150px;top:57px;text-align:right;font-size:13px;font-weight:600;font-family:var(--font-primary);color:var(--color-text-primary);">Llega a horario</div>
+        <div style="position:absolute;left:8px;width:150px;top:118px;text-align:right;font-size:12.5px;font-weight:600;font-family:var(--font-primary);color:var(--color-text-primary);line-height:1.3;">Llega unos<br>min tarde</div>
+        <div style="position:absolute;left:8px;width:150px;top:189px;text-align:right;font-size:13px;font-weight:600;font-family:var(--font-primary);color:var(--color-text-primary);">Llega más tarde</div>
+        <div style="position:absolute;left:8px;width:150px;top:252px;text-align:right;font-size:12px;font-weight:600;font-family:var(--font-primary);color:var(--color-text-primary);line-height:1.35;">Ingresa post<br>asignación</div>
+        <!-- fila 1: verde -->
+        <div class="mx-block mx-v4-green"  style="position:absolute;left:164px;top:44px;width:200px;height:56px;">Videos obligatorio</div>
+        <div class="mx-block mx-v4-green"  style="position:absolute;left:370px;top:44px;width:160px;height:56px;">Videos complementario</div>
+        <div class="mx-block mx-v4-green"  style="position:absolute;left:536px;top:44px;width:84px;height:56px;">Espera</div>
+        <!-- fila 2: amarillo -->
+        <div class="mx-block mx-v4-yellow" style="position:absolute;left:254px;top:110px;width:200px;height:56px;">Videos obligatorio</div>
+        <div class="mx-block mx-v4-yellow" style="position:absolute;left:460px;top:110px;width:160px;height:56px;">Videos complementario</div>
+        <!-- fila 3: naranja -->
+        <div class="mx-block mx-v4-peach"  style="position:absolute;left:420px;top:176px;width:200px;height:56px;">Videos obligatorio</div>
+        <!-- fila 4: rojo -->
+        <div class="mx-block mx-v4-red"    style="position:absolute;left:520px;top:242px;width:200px;height:56px;font-weight:700;z-index:10;">Tardísimo — solo ve lo obligatorio</div>
+        <!-- labels derecha -->
+        <div style="position:absolute;left:632px;top:44px;width:100px;font-size:11px;font-weight:700;font-family:var(--font-accent);color:var(--color-text-secondary);line-height:1.4;padding-top:18px;">← equipos</div>
+        <div style="position:absolute;left:728px;top:242px;width:120px;font-size:11px;font-weight:700;font-family:var(--font-accent);color:var(--color-text-primary);line-height:1.4;padding-top:10px;">dinámica<br>de equipos →</div>
+      </div>
+      </div>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin-top:12px;line-height:1.5;">La línea vertical marca el momento de asignación de equipos. Cada fila representa un escenario de llegada — el objetivo es que todos alcancen ese punto al mismo tiempo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLAZOS -->
+<section class="section" id="plazos">
+  <p class="section-tag">③ Plazos de Nuevo Proyecto</p>
+  <h2 class="section-h2">Lo que necesitamos para<br>lanzar con calidad garantizada</h2>
+  <p class="section-copy">Todo proyecto sigue un árbol de decisión con tres ramas. Los tiempos dependen de si el contenido ya existe en Egg.</p>
+
+  <div style="margin-top:var(--space-7);">
+  <p class="fc-scroll-hint">← Deslizá para ver el árbol completo →</p>
+  <div class="fc-scroll-wrap">
+  <div class="fc-outer">
+  <div style="min-width:900px;">
+    <svg width="100%" viewBox="0 0 960 760" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .th { font-size: 13px; font-weight: 600; fill: #085041; font-family: "Space Grotesk", sans-serif; }
+      .ts { font-size: 11px; font-weight: 400; fill: #0F6E56; font-family: "Space Grotesk", sans-serif; }
+      .c-teal rect { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5; }
+      .c-amber rect { fill: #FAEEDA; stroke: #854F0B; stroke-width: 0.5; }
+      .c-amber .th { fill: #633806; }
+      .c-amber .ts { fill: #854F0B; }
+      .c-gray rect { fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.5; }
+      .c-gray .th { fill: #444441; }
+      .note-box { fill: #F1EFE8; stroke: #B4B2A9; }
+      .note-text { font-size: 11px; fill: #5F5E5A; font-family: "Space Grotesk", sans-serif; }
+      .arr { stroke: #5F5E5A; stroke-width: 1.5; fill: none; }
+      .arr-dashed { stroke: #B4B2A9; stroke-width: 1.2; fill: none; stroke-dasharray: 5 3; }
+      .lbl { font-size: 11px; fill: #5F5E5A; font-family: "Space Grotesk", sans-serif; }
+      .col-header { fill: #F1EFE8; }
+      .col-header-text { font-size: 10px; font-weight: 700; fill: #888780; font-family: "Space Grotesk", sans-serif; letter-spacing: 0.06em; }
+    </style>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Column headers — 4 cols in 960px: 0-185, 215-415, 445-645, 675-855 -->
+  <rect x="0"   y="8" width="185" height="24" rx="5" class="col-header"/>
+  <text x="92"  y="23" text-anchor="middle" class="col-header-text">CAMINO ESTÁNDAR</text>
+  <rect x="210" y="8" width="205" height="24" rx="5" class="col-header"/>
+  <text x="312" y="23" text-anchor="middle" class="col-header-text">CREACIÓN DE CONTENIDO</text>
+  <rect x="430" y="8" width="205" height="24" rx="5" class="col-header"/>
+  <text x="532" y="23" text-anchor="middle" class="col-header-text">FUERA DEL ESTÁNDAR</text>
+  <rect x="650" y="8" width="205" height="24" rx="5" class="col-header"/>
+  <text x="752" y="23" text-anchor="middle" class="col-header-text">RESULTADO</text>
+
+  <!-- COLUMN 1 -->
+  <g class="c-teal"><rect x="2"   y="46"  width="182" height="40" rx="7"/><text class="th" x="93"  y="66"  text-anchor="middle" dominant-baseline="central">Nuevo proyecto</text></g>
+  <line x1="93" y1="86"  x2="93" y2="106" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-amber"><rect x="2"  y="106" width="182" height="40" rx="7"/><text class="th" x="93"  y="126" text-anchor="middle" dominant-baseline="central">¿Es estándar?</text></g>
+  <line x1="93" y1="146" x2="93" y2="166" class="arr" marker-end="url(#arrow2)"/>
+  <text x="100" y="158" class="lbl">SÍ</text>
+  <g class="c-amber"><rect x="2"  y="166" width="182" height="48" rx="7"/>
+    <text class="th" x="93" y="183" text-anchor="middle" dominant-baseline="central">¿Es contenido ya</text>
+    <text class="th" x="93" y="200" text-anchor="middle" dominant-baseline="central">disponible en Egg?</text>
+  </g>
+  <line x1="93" y1="214" x2="93" y2="234" class="arr" marker-end="url(#arrow2)"/>
+  <text x="100" y="226" class="lbl">SÍ</text>
+  <g class="c-teal"><rect x="2"  y="234" width="182" height="48" rx="7"/>
+    <text class="th" x="93" y="251" text-anchor="middle" dominant-baseline="central">Se crea cohorte</text>
+    <text class="ts" x="93" y="268" text-anchor="middle" dominant-baseline="central">Se cargan usuarios</text>
+  </g>
+  <line x1="93" y1="282" x2="93" y2="302" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-teal"><rect x="2"  y="302" width="182" height="64" rx="7"/>
+    <text class="th" x="93" y="320" text-anchor="middle" dominant-baseline="central">Hasta 24hs antes</text>
+    <text class="ts" x="93" y="337" text-anchor="middle" dominant-baseline="central">Fecha · Horario</text>
+    <text class="ts" x="93" y="353" text-anchor="middle" dominant-baseline="central">Carga hasta 1hs antes</text>
+  </g>
+
+  <!-- NO ¿Es estándar? → col3 -->
+  <path d="M184 126 L430 126" class="arr" marker-end="url(#arrow2)"/>
+  <text x="302" y="119" text-anchor="middle" class="lbl">NO</text>
+  <!-- NO contenido → col2 -->
+  <path d="M184 190 L210 190" class="arr" marker-end="url(#arrow2)"/>
+  <text x="197" y="183" text-anchor="middle" class="lbl">NO</text>
+
+  <!-- COLUMN 2 -->
+  <g class="c-teal"><rect x="210" y="166" width="205" height="48" rx="7"/>
+    <text class="th" x="312" y="183" text-anchor="middle" dominant-baseline="central">Se crea la sesión</text>
+    <text class="ts" x="312" y="200" text-anchor="middle" dominant-baseline="central">Sigue este procedimiento</text>
+  </g>
+  <line x1="312" y1="214" x2="312" y2="234" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-teal"><rect x="210" y="234" width="205" height="48" rx="7"/>
+    <text class="th" x="312" y="251" text-anchor="middle" dominant-baseline="central">Programa</text>
+    <text class="ts" x="312" y="268" text-anchor="middle" dominant-baseline="central">Egg crea 1 d.h. · Valida 1 d.h.</text>
+  </g>
+  <line x1="312" y1="282" x2="312" y2="302" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-teal"><rect x="210" y="302" width="205" height="48" rx="7"/>
+    <text class="th" x="312" y="319" text-anchor="middle" dominant-baseline="central">Temario de cada sesión</text>
+    <text class="ts" x="312" y="336" text-anchor="middle" dominant-baseline="central">Egg crea 2 d.h. · Valida 1 d.h.</text>
+  </g>
+  <line x1="312" y1="350" x2="312" y2="370" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-teal"><rect x="210" y="370" width="205" height="48" rx="7"/>
+    <text class="th" x="312" y="387" text-anchor="middle" dominant-baseline="central">Sesiones</text>
+    <text class="ts" x="312" y="404" text-anchor="middle" dominant-baseline="central">Egg crea 1 d.h. · Valida 1 d.h.</text>
+  </g>
+  <line x1="312" y1="418" x2="312" y2="438" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-teal"><rect x="210" y="438" width="205" height="48" rx="7"/>
+    <text class="th" x="312" y="455" text-anchor="middle" dominant-baseline="central">Libretos</text>
+    <text class="ts" x="312" y="472" text-anchor="middle" dominant-baseline="central">Egg crea 1 d.h. · Valida 1 d.h.</text>
+  </g>
+  <line x1="312" y1="486" x2="312" y2="506" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-teal"><rect x="210" y="506" width="205" height="48" rx="7"/>
+    <text class="th" x="312" y="523" text-anchor="middle" dominant-baseline="central">Recursos apertura y cierre</text>
+    <text class="ts" x="312" y="540" text-anchor="middle" dominant-baseline="central">Egg crea 3 d.h. · Valida 1 d.h.</text>
+  </g>
+  <line x1="312" y1="554" x2="312" y2="574" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-teal"><rect x="210" y="574" width="205" height="48" rx="7"/>
+    <text class="th" x="312" y="591" text-anchor="middle" dominant-baseline="central">Traducción</text>
+    <text class="ts" x="312" y="608" text-anchor="middle" dominant-baseline="central">Egg traduce 1 d.h.</text>
+  </g>
+
+  <!-- COLUMN 3 -->
+  <g class="c-amber"><rect x="430" y="106" width="205" height="40" rx="7"/><text class="th" x="532" y="126" text-anchor="middle" dominant-baseline="central">¿Requiere ingeniería?</text></g>
+  <!-- NO → col4 note -->
+  <path d="M635 126 L650 126" class="arr-dashed" marker-end="url(#arrow2)"/>
+  <text x="642" y="119" text-anchor="middle" class="lbl">NO</text>
+  <line x1="532" y1="146" x2="532" y2="176" class="arr" marker-end="url(#arrow2)"/>
+  <text x="540" y="164" class="lbl">SÍ</text>
+  <g class="c-teal"><rect x="430" y="176" width="205" height="48" rx="7"/>
+    <text class="th" x="532" y="193" text-anchor="middle" dominant-baseline="central">Se define el requerimiento</text>
+    <text class="ts" x="532" y="210" text-anchor="middle" dominant-baseline="central">Junto al cliente</text>
+  </g>
+  <line x1="532" y1="224" x2="532" y2="254" class="arr" marker-end="url(#arrow2)"/>
+  <g class="c-amber"><rect x="430" y="254" width="205" height="40" rx="7"/><text class="th" x="532" y="274" text-anchor="middle" dominant-baseline="central">Valida equipo Egg</text></g>
+  <!-- NO → col4 descarta -->
+  <path d="M635 274 L650 274" class="arr" marker-end="url(#arrow2)"/>
+  <text x="642" y="267" text-anchor="middle" class="lbl">NO</text>
+  <line x1="532" y1="294" x2="532" y2="324" class="arr" marker-end="url(#arrow2)"/>
+  <text x="540" y="312" class="lbl">SÍ</text>
+  <g class="c-teal"><rect x="430" y="324" width="205" height="48" rx="7"/>
+    <text class="th" x="532" y="341" text-anchor="middle" dominant-baseline="central">Se entregan plazos y costos</text>
+    <text class="ts" x="532" y="358" text-anchor="middle" dominant-baseline="central">Según situación</text>
+  </g>
+
+  <!-- COLUMN 4 -->
+  <rect x="650" y="100" width="205" height="58" rx="7" class="note-box" stroke-width="0.8"/>
+  <text x="752" y="120" text-anchor="middle" class="note-text">Egg informa los desvíos</text>
+  <text x="752" y="136" text-anchor="middle" class="note-text">y no toma responsabilidad</text>
+  <text x="752" y="152" text-anchor="middle" class="note-text">sobre el Exe.</text>
+  <g class="c-gray"><rect x="650" y="254" width="205" height="40" rx="7"/><text class="th" x="752" y="274" text-anchor="middle" dominant-baseline="central">Se descarta</text></g>
+</svg>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+</section>
+
+<!-- ETIQUETAS -->
+<section class="section" id="etiquetas">
+  <p class="section-tag">④ Etiquetas de Segmentación</p>
+  <h2 class="section-h2">Segmentá tu cohorte.<br>Sin romper la dinámica.</h2>
+  <p class="section-copy">Las etiquetas permiten organizar y segmentar participantes dentro de una cohorte. Hay una regla que no puede ignorarse.</p>
+
+  <div style="margin-top:var(--space-7);display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);">
+
+    <!-- QUÉ SON -->
+    <div style="background:var(--color-bg-panel);border-radius:var(--radius-card-sm);padding:28px 32px;">
+      <p style="font-family:var(--font-accent);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:var(--space-4);">Para qué sirven</p>
+      <p style="font-size:17px;font-weight:600;margin-bottom:10px;line-height:1.3;">Organizan la experiencia sin sacrificar calidad grupal</p>
+      <p style="font-size:15px;color:var(--color-text-secondary);line-height:1.6;">Las etiquetas permiten agrupar participantes por criterio — rol, área, nivel, sede — para que los equipos queden conformados entre pares con contexto común. El sistema las usa en el momento de asignación automática para garantizar pertinencia del grupo.</p>
+      <div style="margin-top:var(--space-5);display:flex;flex-wrap:wrap;gap:var(--space-2);">
+        <span class="etag dark">Por rol</span>
+        <span class="etag dark">Por área</span>
+        <span class="etag">Por sede</span>
+        <span class="etag">Por nivel</span>
+        <span class="etag">Por idioma</span>
+      </div>
+    </div>
+
+    <!-- LA REGLA -->
+    <div style="background:var(--color-black-base);border-radius:var(--radius-card-sm);padding:28px 32px;">
+      <p style="font-family:var(--font-accent);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-rose);margin-bottom:var(--space-4);">Regla crítica</p>
+      <p style="font-size:17px;font-weight:600;color:var(--color-white);margin-bottom:10px;line-height:1.3;">Mínimo 20 inscriptos por segmento</p>
+      <p style="font-size:15px;color:rgba(247,245,242,.45);line-height:1.6;">El exceso de etiquetas en cohortes pequeñas reduce la capacidad de formar equipos colaborativos estables. Si un segmento queda con menos de 20 inscriptos, la asignación de equipos se degrada y la experiencia se resiente.</p>
+      <div style="margin-top:var(--space-5);background:rgba(255,100,124,.12);border-radius:10px;padding:14px 16px;border-left:3px solid var(--color-rose);">
+        <p style="font-size:13px;color:rgba(247,245,242,.6);line-height:1.5;">Menos de 20 inscriptos por etiqueta → equipos incompletos · menor diversidad · experiencia degradada</p>
+      </div>
+    </div>
+
+  </div>
+
+
+</section>
+
+<!-- MENTOR -->
+<section class="section" id="mentor">
+  <p class="section-tag">⑤ El Mentor</p>
+  <h2 class="section-h2">La metodología no depende<br>de un facilitador humano.</h2>
+  <p class="section-copy">Egg está diseñado para funcionar sin intervención externa en las salas de equipo. El mentor no es el motor de la sesión — los participantes lo son.</p>
+
+  <div style="margin-top:var(--space-7);display:grid;grid-template-columns:1.2fr 1fr;gap:var(--space-8);">
+
+    <div>
+      <!-- por qué no hay facilitador -->
+      <div style="margin-bottom:var(--space-6);">
+        <p style="font-size:19px;font-weight:600;margin-bottom:10px;">¿Por qué la sesión no necesita un facilitador dentro del equipo?</p>
+        <p style="font-size:16px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:16px;">El ingreso de personas externas al equipo modifica la dinámica espontánea de cooperación. La autonomía no es un lujo del diseño — es la condición que permite escalar la experiencia con la misma calidad a 20 o a 2.000 participantes simultáneos.</p>
+        <p style="font-size:16px;color:var(--color-text-secondary);line-height:1.6;">Cuando alguien interviene desde afuera, los participantes transfieren la responsabilidad hacia esa figura y la cooperación interna se debilita.</p>
+      </div>
+
+      <!-- qué sí puede hacer -->
+      <div style="background:var(--color-bg-panel);border-radius:var(--radius-card-sm);padding:24px 28px;border-left:3px solid var(--color-yellow);">
+        <p style="font-family:var(--font-accent);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:12px;">¿Qué rol puede asumir el mentor?</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--color-yellow);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:12px;font-weight:700;color:var(--color-black-base);">✓</div>
+            <p style="font-size:15px;color:var(--color-text-secondary);line-height:1.5;">Monitorear el avance general desde el panel de administración</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--color-yellow);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:12px;font-weight:700;color:var(--color-black-base);">✓</div>
+            <p style="font-size:15px;color:var(--color-text-secondary);line-height:1.5;">Acompañar la experiencia global desde afuera de las salas</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- columna derecha: principio científico -->
+    <div style="display:flex;flex-direction:column;gap:var(--space-5);">
+      <div style="background:var(--color-black-base);border-radius:var(--radius-card-sm);padding:28px 32px;flex:1;">
+        <p style="font-family:var(--font-accent);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-yellow);margin-bottom:var(--space-4);">Principio científico</p>
+        <p style="font-size:22px;font-weight:600;color:var(--color-white);line-height:1.2;margin-bottom:16px;">"Las salas de equipo deben preservar autonomía operativa sin interferencia externa"</p>
+        <p style="font-size:15px;color:rgba(247,245,242,.45);line-height:1.6;">La cooperación espontánea requiere que el grupo confíe en su propio proceso. La presencia de un observador o facilitador activa dinámicas de dependencia que inhiben la autorregulación colectiva.</p>
+      </div>
+      <div style="background:var(--color-bg-panel);border-radius:var(--radius-card-sm);padding:20px 24px;">
+        <p style="font-family:var(--font-accent);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:10px;">Impacto si se interviene</p>
+        <p style="font-size:14px;color:#7f1d1d;background:#fce4ec;border-radius:8px;padding:10px 14px;line-height:1.5;">Dependencia de facilitación externa · interrupción del flujo colectivo · menor estabilidad colaborativa</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPROMISO -->
+<section class="section" id="compromiso">
+  <p class="section-tag">Nuestro Compromiso</p>
+  <div class="commitment">
+    <div>
+      <div class="commitment-tag yellow">Dentro del estándar</div>
+      <div class="commitment-h">Calidad garantizada al 100%</div>
+      <div class="commitment-body">Cuando se respetan el flujo, el onboarding, los plazos y las reglas metodológicas, Egg garantiza la excelencia de la experiencia. No como promesa — como resultado documentado en millones de sesiones.</div>
+    </div>
+    <div class="commitment-divider"></div>
+    <div>
+      <div class="commitment-tag rose">Fuera del estándar</div>
+      <div class="commitment-h">Nos adaptamos. </div>
+      <div class="commitment-body">Listos para desarrollar cualquier propuesta fuera del estándar. Dado que estos diseños no cuentan con un histórico de pruebas, la responsabilidad sobre el desempeño y funcionalidad final del proyecto será compartida junto al cliente.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>egg · Metodología · Estándar de Excelencia · Todos los plazos en días hábiles</span>
+</footer>
+
+<script>
+function toggleFlow(el) { el.classList.toggle('open'); }
+</script>
+</body>
+</html>
